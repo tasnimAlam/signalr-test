@@ -38,15 +38,16 @@ function App() {
   };
 
   const onClearMessage = () => {
-    while (messageRef.current.firstChild) {
-      messageRef.current.removeChild(messageRef.current.firstChild);
+    const ul = messageRef.current;
+    while (ul.firstChild) {
+      ul.removeChild(ul.firstChild);
     }
   };
 
   return (
-    <div className="App">
+    <div className="container">
       <div>
-        <h3>Enter exercise ID</h3>
+        <h4>Enter exercise ID</h4>
         <input
           value={exerciseId}
           onChange={(e) => setExerciseId(e.target.value)}
