@@ -1,11 +1,10 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HubConnectionBuilder } from "@microsoft/signalr";
 
 function App() {
   const [connection, setConnection] = useState(null);
   const [exerciseId, setExerciseId] = useState(702);
   const [messages, setMessages] = useState([]);
-  const messageRef = useRef(null);
 
   useEffect(() => {
     let connection = new HubConnectionBuilder()
@@ -20,11 +19,6 @@ function App() {
     if (connection) {
       connection.on("Update", (message) => {
         setMessages([...messages, message]);
-
-        const li = document.createElement("li");
-        li.textContent = message;
-
-        messageRef.current.appendChild(li);
       });
     }
   }, [connection, messages]);
@@ -35,13 +29,6 @@ function App() {
 
   const onCancelClick = () => {
     connection.invoke("Cancel");
-  };
-
-  const onClearMessage = () => {
-    const ul = messageRef.current;
-    while (ul.firstChild) {
-      ul.removeChild(ul.firstChild);
-    }
   };
 
   return (
@@ -56,10 +43,14 @@ function App() {
       <div>
         <button onClick={() => onStartClick()}>Start</button>
         <button onClick={() => onCancelClick()}>Cancel</button>
-        <button onClick={() => onClearMessage()}>Clear</button>
+        <button onClick={() => setMessages([])}>Clear</button>
       </div>
 
-      <ul ref={messageRef}></ul>
+      <ul>
+        {messages.map((message, index) => (
+          <li key={index}>{message}</li>
+        ))}
+      </ul>
     </div>
   );
 }
