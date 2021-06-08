@@ -27,7 +27,7 @@ function App() {
         messageRef.current.appendChild(li);
       });
     }
-  }, [connection]);
+  }, [connection, messages]);
 
   const onStartClick = () => {
     connection.invoke("Start", exerciseId);
